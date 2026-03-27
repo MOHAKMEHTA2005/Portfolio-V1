@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohak Mehta | Machine Learning Engineer</title>
+    
+    <!-- Deep SEO & Social Preview Metadata -->
+    <meta name="description" content="Mohak Mehta - Machine Learning Engineer & Full Stack Vibe Coder. Explore a premium portfolio of high-end algorithms and interactive web experiences.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mohak Mehta | Developer Portfolio">
+    <meta property="og:description" content="Machine Learning Engineer & Full Stack Vibe Coder. Architecting systems that look extraordinary on the surface.">
+    <meta property="og:image" content="images/helloworld.png">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Mohak Mehta | Developer Portfolio">
+    <meta property="twitter:description" content="Machine Learning Engineer & Full Stack Vibe Coder. Architecting systems that look extraordinary on the surface.">
+    <meta property="twitter:image" content="images/helloworld.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* Temporarily hide cursor for custom cursor implementation */
+        body { cursor: none; }
+        a, button, .project-card, .magnetic { cursor: none !important; }
+    </style>
+</head>
+<body>
+    <!-- Terminal Preloader -->
+    <div id="preloader">
+        <div class="preloader-terminal">
+            <div id="preloader-output"></div>
+            <span class="cursor-blink">_</span>
+        </div>
+    </div>
+
+    <!-- Premium Polish Layers -->
+    
+    <div class="noise-overlay"></div>
+    <div class="scroll-progress" id="scroll-progress"></div>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- Flashlight Toggle -->
+    <button class="flashlight-toggle magnetic" id="flashlight-btn" title="Toggle Flashlight Mode">🔦</button>
+
+    <!-- Floating Header CTAs (Moved to Top Right) -->
+    <div class="fixed-actions">
+        <a href="mailto:mohakmehta.2005@gmail.com" class="floating-btn hire-me-btn magnetic">
+            <span class="btn-text">HIRE ME</span>
+        </a>
+        <a href="./Resume.pdf" class="floating-btn resume-btn magnetic" download aria-label="Download CV" title="Download Resume">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        </a>
+    </div>
+
+    <!-- WebGL Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <main id="app">
+        <!-- Hero Section -->
+        <section id="hero" class="section hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">MOHAK MEHTA</h1>
+                <div class="terminal-box">
+                    <span class="prompt">></span> <span id="typewriter"></span><span class="cursor-blink">_</span>
+                </div>
+                <!-- Margin adjusted via CSS now -->
+                <div class="cta-wrapper magnetic">
+                    <a href="#projects" class="cta-pill">View Work</a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span class="mouse"></span>
+                <span class="text">Scroll</span>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <div class="container layout-grid glass-panel">
+                <div class="section-header">
+                    <span class="mono-label">01 // INITIALIZE</span>
+                    <h2>About.</h2>
+                </div>
+                <div class="section-content">
+                    <p class="lead-text">
+                        A 3rd-year Engineering Student obsessed with the intersection of
+                        cutting-edge algorithms and beautiful, intuitive interfaces.
+                    </p>
+                    <p>
+                        Specializing in Machine Learning and Full Stack development, I architect systems
+                        that are not only powerful under the hood but look extraordinary on the surface.
+                        A relentless pursuit of engineering excellence and aesthetic mastery.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section skills-section">
+            <div class="container layout-grid">
+                <div class="section-header">
+                    <span class="mono-label">02 // DEPENDENCIES</span>
+                    <h2>Tech Stack.</h2>
+                </div>
+                <!-- Distinct Cards for Skills -->
+                <div class="section-content skills-grid">
+                    <div class="skill-category">
+                        <h3>Machine Learning</h3>
+                        <ul class="skill-list">
+                            <li>Python & TensorFlow</li>
+                            <li>PyTorch & Keras</li>
+                            <li>NLP (Sentence Transformers)</li>
+                            <li>Algorithms & Data Viz</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Frontend</h3>
+                        <ul class="skill-list">
+                            <li>JavaScript (ES6+) & TypeScript</li>
+                            <li>React & Next.js</li>
+                            <li>Three.js & WebGL</li>
+                            <li>GSAP Animation</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Backend & Cloud</h3>
+                        <ul class="skill-list">
+                            <li>Node.js & Express</li>
+                            <li>MongoDB & Firebase</li>
+                            <li>Flask & Elasticsearch</li>
+                            <li>Docker & REST APIs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section projects-section">
+            <div class="container">
+                <div class="section-header mb-large">
+                    <span class="mono-label">03 // EXECUTE</span>
+                    <h2>Selected Work.</h2>
+                </div>
+                <div class="projects-grid" id="projects-container"></div>
+            </div>
+        </section>
+
+        <!-- God-Tier Feature: Neon City GitHub Contributions -->
+        <section class="section" id="github-city" style="position: relative; overflow: hidden;">
+            <div class="container" style="position: relative; z-index: 10;">
+                <h2 class="section-title">Contribution <span class="highlight">City</span></h2>
+                <div style="font-family: var(--font-mono); font-size: 0.9rem; opacity: 0.7; margin-bottom: 2rem;">
+                    [ 365 Days of Code ] -- Move cursor to orbit the neon metropolis.
+                </div>
+            </div>
+            <canvas id="github-canvas" style="width: 100%; height: 50vh; outline: none; display: block;"></canvas>
+            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(transparent, var(--color-bg)); pointer-events: none;"></div>
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(var(--color-bg), transparent); pointer-events: none;"></div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <div class="container layout-grid">
+                <div class="section-header">
+                    <span class="mono-label">04 // TERMINATE</span>
+                    <h2>Collaborate.</h2>
+                </div>
+                <div class="section-content contact-content">
+                    <h3 class="contact-headline">Ready to build something extraordinary?</h3>
+                    <p>Whether you need a machine learning consultant or a full-stack visionary, let's connect and build the future.</p>
+                    
+                    <div class="contact-links">
+                        <a href="mailto:mohakmehta.2005@gmail.com" class="cyber-link magnetic">Email</a>
+                        <a href="https://www.linkedin.com/in/mohakmehta2005/" target="_blank" class="cyber-link magnetic">LinkedIn</a>
+                        <a href="https://github.com/MOHAKMEHTA2005" target="_blank" class="cyber-link magnetic">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upgraded Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; <span id="year"></span> Mohak Mehta. All Rights Reserved. Engineered with absolute precision.</p>
+                <p style="margin-top: 1.5rem; font-size: 0.75rem; opacity: 0.3; letter-spacing: 0.1em; font-family: var(--font-mono);">[ SYSTEM: WAITING FOR 'MOHAK' OR 'VIBE' INPUT ]</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- GSAP Core & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    
+    <!-- ES6 App -->
+    <script type="module" src="./js/projects.js"></script>
+    <script type="module" src="./js/github-city.js"></script>
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>

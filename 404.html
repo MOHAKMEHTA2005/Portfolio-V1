@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Reality Not Found</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        body { background: #030303; overflow: hidden; margin: 0; padding: 0; color: #fff; }
+        .glitch-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: var(--font-mono);
+            position: relative;
+            z-index: 10;
+        }
+        .error-code { font-size: 8rem; font-weight: bold; color: #ff0055; text-shadow: 0 0 20px #ff0055; margin: 0; line-height: 1; }
+        .error-msg { font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 2rem; color: #fff; }
+        
+        .terminal-log { width: 80%; max-width: 600px; height: 200px; overflow: hidden; opacity: 0.8; font-size: 0.9rem; color: #00f5ff; border: 1px solid rgba(0, 245, 255, 0.2); padding: 1rem; border-radius: 4px; background: rgba(0,0,0,0.5); }
+        .log-entry { margin-bottom: 0.2rem; }
+        
+        .reboot-btn {
+            background: transparent; border: 1px solid #00f5ff; color: #00f5ff; padding: 1rem 3rem;
+            cursor: pointer; font-family: var(--font-mono); font-size: 1.2rem; margin-top: 3rem; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 4px;
+        }
+        .reboot-btn:hover { background: #00f5ff; color: #000; box-shadow: 0 0 30px #00f5ff; transform: scale(1.05); }
+
+        /* Violent Glitch Animations */
+        @keyframes violent-glitch {
+            0% { transform: translate(0) skew(0deg); filter: hue-rotate(0deg); }
+            20% { transform: translate(-20px, 10px) skew(10deg); filter: hue-rotate(90deg) invert(100%); }
+            40% { transform: translate(20px, -10px) skew(-10deg); filter: hue-rotate(180deg); }
+            60% { transform: translate(-10px, 20px) skew(5deg); filter: hue-rotate(270deg) invert(100%); }
+            80% { transform: translate(10px, -20px) skew(-5deg); filter: hue-rotate(360deg); }
+            100% { transform: translate(0) skew(0deg); filter: hue-rotate(0deg); }
+        }
+        .crashing {
+            animation: violent-glitch 0.15s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="glitch-container" id="container">
+        <h1 class="error-code">404</h1>
+        <div class="error-msg">ERR_SYS_FAILURE: REALITY NOT FOUND</div>
+        <div class="terminal-log" id="log"></div>
+        <button class="reboot-btn" id="reboot">REBOOT SYSTEM</button>
+    </div>
+
+    <script>
+        const logs = [
+            "KERNEL PANIC: Out of bounds memory access at 0x000F4...",
+            "Attempting to dump core registers...",
+            "Segmentation fault (core dumped) in Neural Tunnel",
+            "VIBE_ENGINE check: FAILED",
+            "Emergency fallback: Overriding matrix coordinates",
+            "Warning: Reality distortion detected in sector 4",
+            "Hardware failure: GPU disconnected",
+            "Attempting to clear virtual memory...",
+            "FATAL: Unable to resolve absolute path /mohak",
+            "Initiating hyper-thread recovery sequence..."
+        ];
+
+        const logContainer = document.getElementById('log');
+        const rebootBtn = document.getElementById('reboot');
+        let audioCtx;
+
+        function playCrashSound() {
+            if(!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            // Aggressive bass drop glitch sound
+            osc.frequency.setValueAtTime(100 + Math.random() * 200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.3);
+            
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        let logIndex = 0;
+        function printLog() {
+            if(logIndex < logs.length) {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerText = "> " + logs[logIndex];
+                logContainer.appendChild(div);
+                logContainer.scrollTop = logContainer.scrollHeight;
+                logIndex++;
+                
+                // Randomly trigger violent screen glitch during logs
+                if(Math.random() > 0.4) {
+                    playCrashSound();
+                    document.body.classList.add('crashing');
+                    setTimeout(() => document.body.classList.remove('crashing'), 100);
+                }
+
+                setTimeout(printLog, Math.random() * 500 + 100);
+            } else {
+                // Flash finished sequence
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.innerText = "> READY FOR REBOOT.";
+                    div.style.color = "#00ff41";
+                    logContainer.appendChild(div);
+                }, 1000);
+            }
+        }
+
+        // Must wait for user interaction to play audio reliably in modern browsers,
+        // so we start logs, but wait for first click to panic fully.
+        setTimeout(printLog, 800);
+
+        rebootBtn.addEventListener('click', () => {
+            playCrashSound();
+            document.body.classList.add('crashing');
+            document.body.style.background = "#fff"; // blinding flash
+            setTimeout(() => {
+                window.location.href = 'index.html'; // Go back to home
+            }, 800);
+        });
+    </script>
+</body>
+</html>
