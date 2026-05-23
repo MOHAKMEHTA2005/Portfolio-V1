@@ -456,7 +456,21 @@ class Experience {
         window.addEventListener('resize', this.onResize.bind(this));
         
         this.clock = new THREE.Clock();
-        this.tick();
+        this.isIntersecting = false;
+        this.initObserver();
+    }
+
+    initObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const wasIntersecting = this.isIntersecting;
+                this.isIntersecting = entry.isIntersecting;
+                if (this.isIntersecting && !wasIntersecting) {
+                    this.tick();
+                }
+            });
+        }, { threshold: 0.01 }); // Ticker starts when even 1% of canvas is visible
+        observer.observe(this.canvas);
     }
 
     initMobileGyroscope() {
@@ -581,6 +595,8 @@ class Experience {
     }
 
     tick() {
+        if (!this.isIntersecting) return; // Completely pause requestAnimationFrame loop when scrolled off-screen
+
         const elapsedTime = this.clock.getElapsedTime();
 
         // 1. Core rotation of the tunnel
@@ -633,7 +649,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         // Init the systems in background
         const appInteractions = new AppInteractions();
-        window.experienceInstance = new Experience(appInteractions);
+        
+        // WebGL Capability Check and Fallback
+        let hasWebGL = false;
+        try {
+            const canvas = document.createElement('canvas');
+            hasWebGL = !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+        } catch (e) {
+            hasWebGL = false;
+        }
+
+        if (hasWebGL) {
+            window.experienceInstance = new Experience(appInteractions);
+        } else {
+            document.body.classList.add('no-webgl');
+            console.warn('[VIBE_ENGINE] WebGL is unsupported or slow on this device. Applying elegant CSS animated grid mesh fallback.');
+        }
         
         // Fade out preloader
         preloader.style.opacity = '0';

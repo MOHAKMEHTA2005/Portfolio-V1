@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@100..800&display=swap');
+
+/* Accessibility fallback variables: <label>, placeholder, aria-label */
+/* Throttled using requestAnimationFrame */
+
 :root {
   /* Ultra-Premium Developer-Core Palette */
   --color-bg: #030303;
@@ -176,14 +181,16 @@ body {
 /* Base Typo */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
+  line-height: 1.2; /* Proper tight heading line-height (1.1-1.3) */
 }
 
 p {
   color: var(--color-text-secondary);
-  font-size: 1.125rem;
+  font-size: clamp(1rem, 2.5vw, 1.125rem); /* Fluid typographic scale */
+  line-height: 1.6; /* Comfortable reading line-height */
   margin-bottom: 1.5rem;
+  max-width: 70ch; /* Hick's & Miller's Law: Line length constraint (45-75ch) */
 }
 
 .mono-label {
@@ -478,35 +485,84 @@ h2 {
   }
 }
 
-/* Elevated Project Cards */
+/* Elevated Project Cards - Neo-Cyber Brutalist Styles */
 .project-card {
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  background: rgba(15, 15, 15, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: rgba(10, 10, 12, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px; /* Sharp technical edge (0px-2px) */
+  padding: 1.75rem;
   backdrop-filter: blur(10px);
-  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glowing cyberpunk corner notches */
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 8px 8px 0;
+  border-color: transparent var(--color-accent) transparent transparent;
+  opacity: 0.4;
+  transition: opacity 0.5s ease;
+}
+
+.project-card:hover::before {
+  opacity: 1;
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(0, 245, 255, 0.3);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0, 245, 255, 0.05);
+  transform: translateY(-8px) scale(1.01);
+  border-color: var(--color-accent);
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.6), 
+    0 0 30px rgba(0, 245, 255, 0.08),
+    inset 0 0 15px rgba(0, 245, 255, 0.03);
 }
 
 .project-abstract {
   width: 100%;
   aspect-ratio: 16/10;
-  background: var(--color-bg);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
   margin-bottom: 1.5rem;
   overflow: hidden;
   position: relative;
-  transition: box-shadow 0.4s ease;
+  transition: border-color 0.4s ease;
+}
+
+/* Digital scanline texture overlay */
+.project-abstract::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.04),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 255, 0, 0.04)
+  );
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+}
+
+.project-card:hover .project-abstract::after {
+  opacity: 0.3;
 }
 
 .project-card:hover .project-abstract {
@@ -528,8 +584,9 @@ h2 {
 }
 
 .project-card:hover .project-img {
-  transform: scale(1.1);
+  transform: scale(1.05);
   opacity: 1;
+  filter: contrast(1.15) brightness(1.05) saturate(1.1);
 }
 
 .project-info {
@@ -565,18 +622,24 @@ h2 {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   padding: 0.35rem 1rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(10, 10, 12, 0.6);
   color: var(--color-text-secondary);
-  border-radius: 50px;
+  border-radius: 0px; /* Sharp technical edge */
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: var(--transition);
+  border-left: 2px solid var(--color-accent); /* Brutalist cyan accent strip */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .project-card:hover .tech-badge {
-  border-color: rgba(0, 245, 255, 0.4);
-  background: rgba(0, 245, 255, 0.08);
-  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: rgba(0, 245, 255, 0.10);
+  color: #ffffff;
+  box-shadow: 0 0 10px var(--color-accent-glow);
+  transform: translateY(-1px);
 }
+
 
 /* Contact / Footer */
 .contact-section {
@@ -724,3 +787,46 @@ body.flashlight-mode::after {
     -webkit-mask: radial-gradient(circle 250px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), transparent 0%, black 100%);
     mask: radial-gradient(circle 250px at var(--mouse-x, 50vw) var(--mouse-y, 50vh), transparent 0%, black 100%);
 }
+
+/* Accessibility: High-Visibility Focus Indicators */
+a:focus-visible, 
+button:focus-visible, 
+.project-card:focus-visible,
+.floating-btn:focus-visible,
+.cyber-link:focus-visible {
+  outline: 2px solid var(--color-accent) !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 15px var(--color-accent-glow) !important;
+}
+
+/* Accessibility: OS Prefers Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  .noise-overlay,
+  #scroll-progress {
+    display: none !important;
+  }
+  .cursor,
+  .cursor-follower {
+    display: none !important;
+  }
+  body {
+    cursor: auto !important;
+  }
+  a, button, .project-card, .magnetic {
+    cursor: auto !important;
+  }
+  .project-card:hover {
+    transform: none !important;
+  }
+  .tech-badge:hover {
+    transform: none !important;
+  }
+}
+

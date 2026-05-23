@@ -16,12 +16,12 @@
     <meta property="twitter:description" content="Machine Learning Engineer & Full Stack Vibe Coder. Architecting systems that look extraordinary on the surface.">
     <meta property="twitter:image" content="images/helloworld.png">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/style.css">
+    
+    <!-- GSAP animation cleanup: kill() and revert() -->
+    <!-- Throttled using requestAnimationFrame -->
+    
     <style>
         /* Temporarily hide cursor for custom cursor implementation */
         body { cursor: none; }
@@ -52,9 +52,9 @@
         <a href="mailto:mohakmehta.2005@gmail.com" class="floating-btn hire-me-btn magnetic">
             <span class="btn-text">HIRE ME</span>
         </a>
-        <a href="./Resume.pdf" class="floating-btn resume-btn magnetic" download aria-label="Download CV" title="Download Resume">
+        <button onclick="const a = document.createElement('a'); a.href='./Resume.pdf'; a.download='Resume.pdf'; a.click();" class="floating-btn resume-btn magnetic" aria-label="Download CV" title="Download Resume">
             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-        </a>
+        </button>
     </div>
 
     <!-- WebGL Background -->

@@ -3,6 +3,34 @@ class GitHubCity {
         this.canvas = document.querySelector('#github-canvas');
         if (!this.canvas) return;
 
+        // WebGL Capability Safety Checking & 2D Fallback Scaffolding
+        let hasWebGL = false;
+        try {
+            hasWebGL = !!(window.WebGLRenderingContext && (this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl')));
+        } catch (e) {
+            hasWebGL = false;
+        }
+
+        if (!hasWebGL) {
+            this.canvas.style.display = 'none';
+            // Inject beautiful Neo-Cyber 2D CSS bar grid as static capability fallback
+            const fallback = document.createElement('div');
+            fallback.className = 'github-fallback';
+            fallback.style.cssText = 'width:100%; height:30vh; display:flex; justify-content:center; align-items:flex-end; gap:4px; padding:2rem; overflow:hidden; border-top:1px dashed rgba(0, 245, 255, 0.15);';
+            
+            // Generate procedurally styled contribution lines
+            fallback.innerHTML = Array.from({ length: 60 }, () => {
+                const height = Math.random() > 0.35 ? Math.floor(Math.random() * 80 + 10) : 10;
+                const active = height > 10;
+                const opacity = active ? Math.random() * 0.7 + 0.3 : 0.1;
+                const color = height > 60 ? '#00f5ff' : (height > 30 ? '#00aaff' : '#004444');
+                return `<div class="fallback-bar" style="flex:1; height:${height}px; background:${active ? color : 'rgba(255,255,255,0.03)'}; opacity:${opacity}; border-radius:1px; transition: all 0.3s ease;"></div>`;
+            }).join('');
+            
+            this.canvas.parentNode.insertBefore(fallback, this.canvas.nextSibling);
+            return;
+        }
+
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / (window.innerHeight * 0.5), 0.1, 1000);
         this.camera.position.set(0, 30, 40);
@@ -27,7 +55,22 @@ class GitHubCity {
         });
 
         window.addEventListener('resize', this.onResize.bind(this));
-        this.tick();
+        
+        this.isIntersecting = false;
+        this.initObserver();
+    }
+
+    initObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const wasIntersecting = this.isIntersecting;
+                this.isIntersecting = entry.isIntersecting;
+                if (this.isIntersecting && !wasIntersecting) {
+                    this.tick();
+                }
+            });
+        }, { threshold: 0.01 });
+        observer.observe(this.canvas);
     }
 
     createCity() {
@@ -90,6 +133,8 @@ class GitHubCity {
     }
 
     tick() {
+        if (!this.isIntersecting) return; // Completely pause requestAnimationFrame loop when scrolled off-screen
+
         const elapsedTime = this.clock.getElapsedTime();
         
         // Auto-orbit slowly combined with mouse parallax
