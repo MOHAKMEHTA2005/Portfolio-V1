@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap pointer
+Sitemap: https://mohakmehta-portfolio-v1.vercel.app/sitemap.xml
