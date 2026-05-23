@@ -1,15 +1,16 @@
 // Data for the Mohak Mehta Portfolio
 
+// export const projects = [
+//     {
+//         id: "helloworld",
+//         title: "HelloWorld",
+//         type: "Full Stack",
+//         context: "Gamified STEM Learning Platform. Integrated coding education with interactive lessons and gamified quizzes to accelerate developer onboarding.",
+//         tech: ["React", "Node.js", "Express", "MongoDB", "Gamification"],
+//         link: "https://github.com/MOHAKMEHTA2005",
+//         image: "images/helloworld.png"
+//     },
 export const projects = [
-    {
-        id: "helloworld",
-        title: "HelloWorld",
-        type: "Full Stack",
-        context: "Gamified STEM Learning Platform. Integrated coding education with interactive lessons and gamified quizzes to accelerate developer onboarding.",
-        tech: ["React", "Node.js", "Express", "MongoDB", "Gamification"],
-        link: "https://github.com/MOHAKMEHTA2005",
-        image: "images/helloworld.png"
-    },
     {
         id: "parda-faash",
         title: "Parda Faash",

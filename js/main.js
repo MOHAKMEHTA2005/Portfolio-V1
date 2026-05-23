@@ -32,15 +32,15 @@ populateProjects();
 class AppInteractions {
     constructor() {
         gsap.registerPlugin(ScrollTrigger, TextPlugin);
-        
+
         // Mouse Coordinates for Parallax & Cursor
         this.mouse = { x: 0, y: 0, normalizedX: 0, normalizedY: 0 };
-        
+
         this.initCursor();
         this.initMagneticButtons();
-        
+
         window.addEventListener('mousemove', this.onMouseMove.bind(this));
-        
+
         // Initialize Audio and Easter Egg listeners
         this.initSoundAndEasterEgg();
         this.initTabVisibility();
@@ -51,11 +51,11 @@ class AppInteractions {
     }
 
     initLenis() {
-        if(typeof Lenis === 'undefined') return;
+        if (typeof Lenis === 'undefined') return;
 
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
@@ -85,14 +85,14 @@ class AppInteractions {
         title.style.gap = '0.5rem'; // Better spacing for repelling
 
         const chars = [];
-        
+
         // Split word by word first to not break wrapping
         const words = text.split(' ');
         words.forEach((word, wordIdx) => {
             const wordDiv = document.createElement('div');
             wordDiv.style.display = 'flex';
-            
-            for(let i = 0; i < word.length; i++) {
+
+            for (let i = 0; i < word.length; i++) {
                 const char = word[i];
                 const span = document.createElement('span');
                 span.className = 'char glitch-char'; // Assign class for pseudo-element CSS mapping
@@ -101,18 +101,18 @@ class AppInteractions {
                 span.style.display = 'inline-block';
                 span.style.position = 'relative';
                 span.style.transformOrigin = 'center';
-                
+
                 wordDiv.appendChild(span);
                 chars.push(span);
             }
-            
+
             title.appendChild(wordDiv);
         });
 
         // Throttle physics calculations to requestAnimationFrame for God-tier performance
         let mouseX = window.innerWidth / 2;
         let mouseY = -1000;
-        
+
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
@@ -136,7 +136,7 @@ class AppInteractions {
                     // Push opposite to mouse
                     const pushX = -(distX / distance) * force * repelStrength;
                     const pushY = -(distY / distance) * force * repelStrength;
-                    
+
                     // Immediately apply physics (no tween duration for zero-latency repel)
                     gsap.to(char, {
                         x: pushX,
@@ -149,7 +149,7 @@ class AppInteractions {
                     });
                 } else {
                     // Elastic snapback
-                    if(char._gsap && (char._gsap.x !== 0 || char._gsap.y !== 0)) {
+                    if (char._gsap && (char._gsap.x !== 0 || char._gsap.y !== 0)) {
                         gsap.to(char, {
                             x: 0,
                             y: 0,
@@ -167,7 +167,7 @@ class AppInteractions {
 
     initFlashlight() {
         const btn = document.getElementById('flashlight-btn');
-        if(btn) {
+        if (btn) {
             btn.addEventListener('click', () => {
                 document.body.classList.toggle('flashlight-mode');
             });
@@ -214,7 +214,7 @@ class AppInteractions {
         // Flashlight CSS Variable injection
         document.body.style.setProperty('--mouse-x', e.clientX + 'px');
         document.body.style.setProperty('--mouse-y', e.clientY + 'px');
-        
+
         // Normalized for Three.js (-1 to +1)
         this.mouse.normalizedX = (e.clientX / window.innerWidth) * 2 - 1;
         this.mouse.normalizedY = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -238,14 +238,14 @@ class AppInteractions {
         // Wait briefly to ensure DOM is fully populated
         setTimeout(() => {
             const magnets = document.querySelectorAll('.magnetic');
-            
+
             magnets.forEach(magnet => {
                 magnet.addEventListener('mousemove', (e) => {
                     const rect = magnet.getBoundingClientRect();
                     // Get offset from center of element
                     const offsetX = (e.clientX - rect.left - rect.width / 2) * 0.3;
                     const offsetY = (e.clientY - rect.top - rect.height / 2) * 0.3;
-                    
+
                     gsap.to(magnet, {
                         x: offsetX,
                         y: offsetY,
@@ -292,7 +292,7 @@ class AppInteractions {
 
         // Easter Egg string tracking
         let typed = "";
-        
+
         // Konami Code Array
         const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
         let konamiIndex = 0;
@@ -313,10 +313,10 @@ class AppInteractions {
             if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
                 typed += e.key.toLowerCase();
                 if (typed.length > 10) typed = typed.slice(-10); // Keep last 10 chars
-                
+
                 if (typed.endsWith('vibe') || typed.endsWith('mohak')) {
                     this.triggerMatrixEasterEgg();
-                    typed = ""; 
+                    typed = "";
                 }
             }
         });
@@ -338,17 +338,17 @@ class AppInteractions {
     triggerMatrixEasterEgg() {
         document.documentElement.style.setProperty('--color-accent', '#00ff41');
         document.documentElement.style.setProperty('--color-accent-glow', 'rgba(0, 255, 65, 0.3)');
-        
+
         if (window.experienceInstance) window.experienceInstance.triggerMatrixColor();
 
         const banner = document.createElement('div');
         banner.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#00ff41;color:#000;padding:10px 20px;font-family:var(--font-mono);font-weight:bold;z-index:999999;border-radius:4px; transition: opacity 0.5s;';
         banner.innerText = 'ENTER THE MATRIX [VIBE ENABLED]';
         document.body.appendChild(banner);
-        
+
         setTimeout(() => banner.style.opacity = '0', 3500);
         setTimeout(() => banner.remove(), 4000);
-        
+
         setTimeout(() => {
             document.documentElement.style.removeProperty('--color-accent');
             document.documentElement.style.removeProperty('--color-accent-glow');
@@ -359,10 +359,10 @@ class AppInteractions {
     typewriterEffect() {
         // Clear text first
         document.getElementById('typewriter').textContent = "";
-        
+
         // Run after initial entry animations
         gsap.to('#typewriter', {
-            text: "Machine Learning Engineer & Full Stack Vibe Coder",
+            text: "Machine Learning Engineer & AI-Assisted Full Stack Developer",
             duration: 3.5,
             delay: 1.5,
             ease: "none"
@@ -383,11 +383,11 @@ class AppInteractions {
         });
 
         // Hero Titles
-        gsap.fromTo('.hero-title', 
+        gsap.fromTo('.hero-title',
             { y: 60, opacity: 0 },
             { y: 0, opacity: 1, duration: 2, ease: "power4.out" }
         );
-        gsap.fromTo('.terminal-box', 
+        gsap.fromTo('.terminal-box',
             { y: 30, opacity: 0 },
             { y: 0, opacity: 1, duration: 1.5, delay: 0.3, ease: "power4.out" }
         );
@@ -412,7 +412,7 @@ class AppInteractions {
 
         // Projects Stagger
         ScrollTrigger.batch(".project-card", {
-            onEnter: batch => gsap.fromTo(batch, 
+            onEnter: batch => gsap.fromTo(batch,
                 { opacity: 0, y: 60, scale: 0.98 },
                 { opacity: 1, y: 0, scale: 1, stagger: 0.15, overwrite: true, duration: 1, ease: "power3.out" }
             ),
@@ -427,7 +427,7 @@ class Experience {
         this.appInteractions = appInteractions;
         this.canvas = document.getElementById('webgl-canvas');
         if (!this.canvas) return;
-        
+
         this.scene = new THREE.Scene();
         this.scene.fog = new THREE.FogExp2(0x030303, 0.0012); // Slightly denser fog
 
@@ -435,7 +435,7 @@ class Experience {
 
         this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 2000);
         this.camera.position.z = 1000;
-        
+
         // Base camera rig for parallax
         this.cameraRig = new THREE.Group();
         this.cameraRig.add(this.camera);
@@ -454,7 +454,7 @@ class Experience {
         this.initMobileGyroscope();
 
         window.addEventListener('resize', this.onResize.bind(this));
-        
+
         this.clock = new THREE.Clock();
         this.isIntersecting = false;
         this.initObserver();
@@ -498,11 +498,11 @@ class Experience {
         const color1 = new THREE.Color('#ffffff');
         const color2 = new THREE.Color('#00f5ff');
 
-        for(let i = 0; i < particleCount; i++) {
+        for (let i = 0; i < particleCount; i++) {
             const z = Math.random() * 2500 - 1500;
             const radius = 180 + Math.random() * 150;
             const theta = Math.random() * Math.PI * 2;
-            
+
             const x = Math.cos(theta) * radius;
             const y = Math.sin(theta) * radius;
 
@@ -530,7 +530,7 @@ class Experience {
 
         this.particles = new THREE.Points(geometry, material);
         this.scene.add(this.particles);
-        
+
         const lineMaterial = new THREE.LineBasicMaterial({
             color: 0x00f5ff,
             transparent: true,
@@ -558,10 +558,10 @@ class Experience {
     triggerMatrixColor() {
         if (!this.particles || !this.particles.geometry.attributes.color) return;
         const colors = this.particles.geometry.attributes.color.array;
-        for(let i = 0; i < colors.length; i+=3) {
+        for (let i = 0; i < colors.length; i += 3) {
             colors[i] = 0.0;     // R
-            colors[i+1] = 1.0;   // G
-            colors[i+2] = 0.25;  // B
+            colors[i + 1] = 1.0;   // G
+            colors[i + 2] = 0.25;  // B
         }
         this.particles.geometry.attributes.color.needsUpdate = true;
         this.lines.material.color.setHex(0x00ff41);
@@ -572,8 +572,8 @@ class Experience {
         const color1 = new THREE.Color('#ffffff');
         const color2 = new THREE.Color('#00f5ff');
         const colors = this.particles.geometry.attributes.color.array;
-        
-        for(let i = 0; i < colors.length / 3; i++) {
+
+        for (let i = 0; i < colors.length / 3; i++) {
             const mixedColor = color1.clone().lerp(color2, Math.random());
             colors[i * 3 + 0] = mixedColor.r;
             colors[i * 3 + 1] = mixedColor.g;
@@ -625,7 +625,7 @@ class Experience {
 document.addEventListener('DOMContentLoaded', () => {
     const output = document.getElementById('preloader-output');
     const preloader = document.getElementById('preloader');
-    
+
     const lines = [
         "[SYS] Initializing WebGL Renderer...",
         "[SYS] Mounting GSAP Control Nodes...",
@@ -633,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "[OK] Identity Confirmed: MOHAK MEHTA.",
         "[OK] Access Granted. Entering VIBE Mode."
     ];
-    
+
     let delay = 0;
     lines.forEach((line) => {
         setTimeout(() => {
@@ -644,12 +644,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, delay);
         delay += Math.random() * 300 + 400; // Between 400 and 700ms per line
     });
-    
+
     // Total preloader time is roughly delay + 600ms
     setTimeout(() => {
         // Init the systems in background
         const appInteractions = new AppInteractions();
-        
+
         // WebGL Capability Check and Fallback
         let hasWebGL = false;
         try {
@@ -665,7 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('no-webgl');
             console.warn('[VIBE_ENGINE] WebGL is unsupported or slow on this device. Applying elegant CSS animated grid mesh fallback.');
         }
-        
+
         // Fade out preloader
         preloader.style.opacity = '0';
         setTimeout(() => {
