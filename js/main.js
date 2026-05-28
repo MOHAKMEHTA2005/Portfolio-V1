@@ -48,6 +48,7 @@ class AppInteractions {
         this.initFlashlight();
         this.initLenis();
         this.initMagneticText();
+        this.initDiagnosticsConsole();
     }
 
     initLenis() {
@@ -172,6 +173,82 @@ class AppInteractions {
                 document.body.classList.toggle('flashlight-mode');
             });
         }
+    }
+
+    initDiagnosticsConsole() {
+        const buttons = document.querySelectorAll('.diagnostic-btn');
+        const outputs = document.querySelectorAll('.diagnostic-output');
+        if (!buttons.length || !outputs.length) return;
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.classList.contains('active')) return;
+
+                // Play custom keyboard mechanical tick sound when executing scripts
+                if (this.audioCtx) {
+                    try {
+                        if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+                        const osc = this.audioCtx.createOscillator();
+                        const gainNode = this.audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(800, this.audioCtx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(300, this.audioCtx.currentTime + 0.08);
+                        gainNode.gain.setValueAtTime(0.015, this.audioCtx.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + 0.08);
+                        osc.connect(gainNode);
+                        gainNode.connect(this.audioCtx.destination);
+                        osc.start();
+                        osc.stop(this.audioCtx.currentTime + 0.08);
+                    } catch (e) {
+                        // Browser audio policy fallback
+                    }
+                }
+
+                // Deactivate current active button
+                const activeBtn = document.querySelector('.diagnostic-btn.active');
+                if (activeBtn) activeBtn.classList.remove('active');
+                btn.classList.add('active');
+
+                // Retrieve targeted screen content
+                const targetQuery = btn.getAttribute('data-query');
+                const targetOutput = document.getElementById(`out-${targetQuery}`);
+                const currentActiveOutput = document.querySelector('.diagnostic-output.active');
+
+                if (currentActiveOutput === targetOutput) return;
+
+                // Clean GSAP fade-out & slide-down transition
+                if (currentActiveOutput) {
+                    gsap.to(currentActiveOutput, {
+                        opacity: 0,
+                        y: 10,
+                        duration: 0.2,
+                        ease: "power2.in",
+                        onComplete: () => {
+                            currentActiveOutput.classList.remove('active');
+                            currentActiveOutput.style.display = 'none';
+
+                            // Animate new console view on screen
+                            if (targetOutput) {
+                                targetOutput.style.display = 'flex';
+                                targetOutput.classList.add('active');
+                                gsap.fromTo(targetOutput,
+                                    { opacity: 0, y: 15 },
+                                    { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }
+                                );
+                            }
+                        }
+                    });
+                } else if (targetOutput) {
+                    // Fallback direct reveal if active output missing
+                    targetOutput.style.display = 'flex';
+                    targetOutput.classList.add('active');
+                    gsap.fromTo(targetOutput,
+                        { opacity: 0, y: 15 },
+                        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }
+                    );
+                }
+            });
+        });
     }
 
     printConsoleArt() {

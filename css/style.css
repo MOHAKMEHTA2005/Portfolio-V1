@@ -801,6 +801,236 @@ button:focus-visible,
   box-shadow: 0 0 15px var(--color-accent-glow) !important;
 }
 
+/* =========================================================================
+   System Diagnostics Section
+   ========================================================================= */
+.diagnostic-system {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gap);
+  margin-top: 2rem;
+}
+
+@media (min-width: 900px) {
+  .diagnostic-system {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: start;
+  }
+}
+
+/* Console buttons */
+.console-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.diagnostic-btn {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  background: rgba(10, 10, 12, 0.4);
+  color: var(--color-text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px; /* Sharp technical edge */
+  padding: 1.1rem 1.5rem;
+  cursor: none !important; /* Managed by custom cursor */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.diagnostic-btn .btn-prompt {
+  color: var(--color-accent);
+  margin-right: 0.5rem;
+  opacity: 0.7;
+}
+
+.diagnostic-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.diagnostic-btn:hover,
+.diagnostic-btn.active {
+  color: var(--color-text-primary);
+  border-color: rgba(0, 245, 255, 0.3);
+  background: rgba(0, 245, 255, 0.03);
+  box-shadow: 
+    0 5px 20px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(0, 245, 255, 0.05);
+}
+
+.diagnostic-btn.active::after {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+
+.diagnostic-btn:hover .btn-prompt,
+.diagnostic-btn.active .btn-prompt {
+  opacity: 1;
+  text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+/* Console Screen Monitor */
+.console-screen {
+  background: rgba(5, 5, 7, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    inset 0 0 40px rgba(0, 0, 0, 0.9);
+}
+
+/* scanline gradient effect */
+.console-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.screen-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 245, 255, 0) 0%,
+    rgba(0, 245, 255, 0.03) 10%,
+    rgba(0, 245, 255, 0) 11%
+  );
+  background-size: 100% 120%;
+  animation: scanlineAnimation 8s linear infinite;
+  z-index: 9;
+  pointer-events: none;
+}
+
+@keyframes scanlineAnimation {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 120%; }
+}
+
+.screen-content {
+  position: relative;
+  z-index: 5;
+}
+
+/* Diagnostic active panel output styling */
+.diagnostic-output {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.output-header {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.output-text {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.output-text strong {
+  color: var(--color-text-primary);
+}
+
+/* Skills list inside Diagnostics screen */
+.output-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.output-list li {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: var(--color-text-secondary);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.output-list li::before {
+  content: '▪';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.output-list strong {
+  color: var(--color-text-primary);
+}
+
+/* Diagnostics specific metrics display */
+.performance-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+@media (min-width: 600px) {
+  .metric {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.m-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+}
+
+.m-val {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
 /* Accessibility: OS Prefers Reduced Motion Safety */
 @media (prefers-reduced-motion: reduce) {
   * {
